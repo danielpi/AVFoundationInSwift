@@ -15,16 +15,27 @@ import AVFoundation
 // - Set the constraints such that it fills the entire area even when it resizes.
 // - Set it such that the view can't get too small
 // - In the View Effects inspector, set the Core Animation Layer to be the Custom View rather than the View.
+// - Link the custom view to the cameraView IBOutlet
+// Now using a subclass of NSView called CameraPreview. It is at the bottom of this file. This is so that I can get access to the CALayer backing the view reliably. Previously I was only getting access to it 50% of the time. The objc.io link below gives details.
 
 // Project settings
 // - Link the AVFoundation and AVKit frameworks
 
+// Links
+// - https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/00_Introduction.html
+// - Discussions about CALayers and NSView items https://www.objc.io/issues/14-mac/appkit-for-uikit-developers/
+
 class ViewController: NSViewController {
 
-    @IBOutlet weak var cameraView: NSView!
+    @IBOutlet weak var cameraView: CameraPreview!
+    
+    // Still and Video Media Capture
+    // Recording input from cameras and microphones is managed by a capture session. A capture session coordinates the flow of data from input devices to outputs such as a movie file. You can configure multiple inputs and outputs for a single session, even when the session is running. You send messages to the session to start and stop data flow.
     
     let session: AVCaptureSession = AVCaptureSession()
-    var previewLayer: AVCaptureVideoPreviewLayer = AVCaptureVideoPreviewLayer()
+    
+    // In addition, you can use an instance of a preview layer to show the user what a camera is recording.
+    
     var videoDeviceInput: AVCaptureDeviceInput?
     var videoDevice: AVCaptureDevice? {
         get {
@@ -68,24 +79,14 @@ class ViewController: NSViewController {
         let videoDevices = foundVideoDevices + foundMuxed
         
         // Or you can use the following code to grab the default camera
-        if let vd = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) {
-            videoDevice = vd
-        } else {
-            if let vd = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeMuxed) {
-                videoDevice = vd
-            }
+        guard let vd = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) else {
+            print("We didn't find a default video media device so we are going to crash")
+            fatalError()
         }
         
-        
-        
-        
-        if let cameraViewLayer = cameraView.layer {
-            cameraViewLayer.backgroundColor = CGColor.black
-            previewLayer = createNewCameraViewLayer(session: session, cameraViewLayer: cameraViewLayer)!
-            session.startRunning()
-        }
-        
-        
+        videoDevice = vd
+        cameraView.addVideoPreview(fromSession: session)
+        session.startRunning()
     }
     
     override func viewWillDisappear() {
@@ -103,6 +104,33 @@ class ViewController: NSViewController {
         } else {
             return nil
         }
+    }
+}
+
+
+class CameraPreview: NSView {
+    
+    var backgroundColor: NSColor = .black // Set the background around the video to black
+    
+    override var wantsUpdateLayer: Bool {
+        get {
+            return true
+        }
+    }
+    
+    override func updateLayer() {
+        self.layer!.backgroundColor = backgroundColor.cgColor
+    }
+    
+    func addVideoPreview(fromSession: AVCaptureSession) {
+        guard let newCameraViewLayer = AVCaptureVideoPreviewLayer(session: fromSession) else {
+            fatalError()
+        }
+        
+        newCameraViewLayer.frame = self.layer!.bounds
+        let autoresizingMask: CAAutoresizingMask = [.layerWidthSizable,.layerHeightSizable]
+        newCameraViewLayer.autoresizingMask = autoresizingMask
+        self.layer!.addSublayer(newCameraViewLayer)
     }
 }
 

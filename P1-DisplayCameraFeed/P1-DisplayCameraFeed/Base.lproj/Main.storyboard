@@ -686,7 +686,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f21-ZW-hQC">
+                            <customView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f21-ZW-hQC" customClass="CameraPreview" customModule="P1_DisplayCameraFeed" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                             </customView>
                         </subviews>
