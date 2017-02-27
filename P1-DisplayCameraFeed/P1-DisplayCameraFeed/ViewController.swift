@@ -27,15 +27,12 @@ import AVFoundation
 
 class ViewController: NSViewController {
 
-    @IBOutlet weak var cameraView: CameraPreview!
+    @IBOutlet weak var cameraView: NSView!
     
     // Still and Video Media Capture
     // Recording input from cameras and microphones is managed by a capture session. A capture session coordinates the flow of data from input devices to outputs such as a movie file. You can configure multiple inputs and outputs for a single session, even when the session is running. You send messages to the session to start and stop data flow.
     
     let session: AVCaptureSession = AVCaptureSession()
-    
-    // In addition, you can use an instance of a preview layer to show the user what a camera is recording.
-    
     var videoDeviceInput: AVCaptureDeviceInput?
     var videoDevice: AVCaptureDevice? {
         get {
@@ -85,52 +82,23 @@ class ViewController: NSViewController {
         }
         
         videoDevice = vd
-        cameraView.addVideoPreview(fromSession: session)
+        
+        // Using a layer-hosting view to display the preview from the camera. 
+        // First up get a Video Preview layer from the session. Set its bounds,
+        // background and auto-resizing behaviour.
+        let newCameraViewLayer = AVCaptureVideoPreviewLayer(session: session)!
+        
+        newCameraViewLayer.frame = cameraView.bounds
+        newCameraViewLayer.backgroundColor = .black
+        newCameraViewLayer.autoresizingMask = [.layerWidthSizable,.layerHeightSizable]
+        
+        cameraView.layer = newCameraViewLayer
+        cameraView.wantsLayer = true
+        
         session.startRunning()
     }
     
     override func viewWillDisappear() {
         session.stopRunning()
     }
-
-    func createNewCameraViewLayer(session: AVCaptureSession, cameraViewLayer: CALayer) -> AVCaptureVideoPreviewLayer? {
-        if let newCameraViewLayer = AVCaptureVideoPreviewLayer(session: session) {
-            newCameraViewLayer.frame = cameraViewLayer.bounds
-            let autoresizingMask: CAAutoresizingMask = [.layerWidthSizable,.layerHeightSizable]
-            newCameraViewLayer.autoresizingMask = autoresizingMask
-            cameraViewLayer.addSublayer(newCameraViewLayer)
-            
-            return newCameraViewLayer
-        } else {
-            return nil
-        }
-    }
 }
-
-
-class CameraPreview: NSView {
-    
-    var backgroundColor: NSColor = .black // Set the background around the video to black
-    
-    override var wantsUpdateLayer: Bool {
-        get {
-            return true
-        }
-    }
-    
-    override func updateLayer() {
-        self.layer!.backgroundColor = backgroundColor.cgColor
-    }
-    
-    func addVideoPreview(fromSession: AVCaptureSession) {
-        guard let newCameraViewLayer = AVCaptureVideoPreviewLayer(session: fromSession) else {
-            fatalError()
-        }
-        
-        newCameraViewLayer.frame = self.layer!.bounds
-        let autoresizingMask: CAAutoresizingMask = [.layerWidthSizable,.layerHeightSizable]
-        newCameraViewLayer.autoresizingMask = autoresizingMask
-        self.layer!.addSublayer(newCameraViewLayer)
-    }
-}
-
