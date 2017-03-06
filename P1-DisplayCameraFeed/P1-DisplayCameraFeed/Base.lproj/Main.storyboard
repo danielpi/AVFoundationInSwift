@@ -688,6 +688,10 @@
                         <subviews>
                             <customView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f21-ZW-hQC">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="480" id="spJ-BJ-6rc"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="270" id="wIN-H7-Tgu"/>
+                                </constraints>
                             </customView>
                         </subviews>
                         <constraints>

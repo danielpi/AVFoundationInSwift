@@ -7,3 +7,6 @@ Basically I am wanting to use video and camera inputs in some of my projects and
 I plan to create several projects with each being as focused as possible on a single task or use case that is of interest. In this way I hope to distill what is actually required for each task so that it is easier to understand.
 
 ## Project 1 - Display a feed from a camera
+Trying to make this as simple as possible. Just a straight feed from your default video device to a preview window. Show the interaction between the minimal objects that you need to know about which are AVCaptureSession, AVCaptureDevice, AVCaptureDeviceInput, AVCaptureVideoPreviewLayer and CALayer.
+
+
