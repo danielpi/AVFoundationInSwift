@@ -9,4 +9,5 @@ I plan to create several projects with each being as focused as possible on a si
 ## Project 1 - Display a feed from a camera
 Trying to make this as simple as possible. Just a straight feed from your default video device to a preview window. Show the interaction between the minimal objects that you need to know about which are AVCaptureSession, AVCaptureDevice, AVCaptureDeviceInput, AVCaptureVideoPreviewLayer and CALayer.
 
-
+## Project 2 - Display a mirrored feed from a camera
+Same as above except for two lines of code that flip the video stream so that the output is mirrored. This means that when using the FaceTime camera on a Mac laptop the video appears as if you are looking into a mirror. Took me a while to figure this out, originally I was trying to transform the CALayer, but that didn't work. This version makes use of the isVideoMirrored property of the AVCaptureVideoPreviewLayer's AVCaptureConnection object.
