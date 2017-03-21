@@ -11,3 +11,6 @@ Trying to make this as simple as possible. Just a straight feed from your defaul
 
 ## Project 2 - Display a mirrored feed from a camera
 Same as above except for two lines of code that flip the video stream so that the output is mirrored. This means that when using the FaceTime camera on a Mac laptop the video appears as if you are looking into a mirror. Took me a while to figure this out, originally I was trying to transform the CALayer, but that didn't work. This version makes use of the isVideoMirrored property of the AVCaptureVideoPreviewLayer's AVCaptureConnection object.
+
+## Project 3 - Display a rotated feed from a camera
+Same as above except the video output is rotated 90 degrees. This is accomplished by rotating the view that holds the Video Preview CALayer. 
