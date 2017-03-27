@@ -1,0 +1,54 @@
+TypeKey,Description,Name,Value,Case Labels
+kCVPixelFormatType_1Monochrome, 1 bit indexed ,1Monochrome,1,.monochrome1:
+kCVPixelFormatType_2Indexed, 2 bit indexed ,2Indexed,2,.indexed2:
+kCVPixelFormatType_4Indexed, 4 bit indexed ,4Indexed,4,.indexed4:
+kCVPixelFormatType_8Indexed, 8 bit indexed ,8Indexed,8,.indexed8:
+kCVPixelFormatType_1IndexedGray_WhiteIsZero," 1 bit indexed gray, white is zero ",1IndexedGray_WhiteIsZero,33,.indexedGray_WhiteIsZero1:
+kCVPixelFormatType_2IndexedGray_WhiteIsZero," 2 bit indexed gray, white is zero ",2IndexedGray_WhiteIsZero,34,.indexedGray_WhiteIsZero2:
+kCVPixelFormatType_4IndexedGray_WhiteIsZero," 4 bit indexed gray, white is zero ",4IndexedGray_WhiteIsZero,36,.indexedGray_WhiteIsZero4:
+kCVPixelFormatType_8IndexedGray_WhiteIsZero," 8 bit indexed gray, white is zero ",8IndexedGray_WhiteIsZero,40,.indexedGray_WhiteIsZero8:
+kCVPixelFormatType_16BE555, 16 bit BE RGB 555 ,16BE555,16,.BE16BE555:
+kCVPixelFormatType_16LE555, 16 bit LE RGB 555 ,16LE555,1278555445,.LE16LE555:
+kCVPixelFormatType_16LE5551, 16 bit LE RGB 5551 ,16LE5551,892679473,.LE16LE5551:
+kCVPixelFormatType_16BE565, 16 bit BE RGB 565 ,16BE565,1110783541,.BE16BE565:
+kCVPixelFormatType_16LE565, 16 bit LE RGB 565 ,16LE565,1278555701,.LE16LE565:
+kCVPixelFormatType_24RGB, 24 bit RGB ,24RGB,24,.RGB24:
+kCVPixelFormatType_24BGR, 24 bit BGR ,24BGR,842285639,.BGR24:
+kCVPixelFormatType_32ARGB, 32 bit ARGB ,32ARGB,32,.ARGB32:
+kCVPixelFormatType_32BGRA, 32 bit BGRA ,32BGRA,1111970369,.BGRA32:
+kCVPixelFormatType_32ABGR, 32 bit ABGR ,32ABGR,1094862674,.ABGR32:
+kCVPixelFormatType_32RGBA, 32 bit RGBA ,32RGBA,1380401729,.RGBA32:
+kCVPixelFormatType_64ARGB," 64 bit ARGB, 16-bit big-endian samples ",64ARGB,1647719521,.ARGB64:
+kCVPixelFormatType_48RGB," 48 bit RGB, 16-bit big-endian samples ",48RGB,1647589490,.RGB48:
+kCVPixelFormatType_32AlphaGray," 32 bit AlphaGray, 16-bit big-endian samples, black is zero ",32AlphaGray,1647522401,.alphaGray32:
+kCVPixelFormatType_16Gray," 16 bit Grayscale, 16-bit big-endian samples, black is zero ",16Gray,1647392359,.gray16:
+kCVPixelFormatType_30RGB," 30 bit RGB, 10-bit big-endian samples, 2 unused padding bits (at least significant end). ",30RGB,1378955371,.RGB30:
+kCVPixelFormatType_422YpCbCr8," Component Y'CbCr 8-bit 4:2:2, ordered Cb Y'0 Cr Y'1 ",422YpCbCr8,846624121,.YpCbCr8_422:
+kCVPixelFormatType_4444YpCbCrA8," Component Y'CbCrA 8-bit 4:4:4:4, ordered Cb Y' Cr A ",4444YpCbCrA8,1983131704,.YpCbCrA8_4444:
+kCVPixelFormatType_4444YpCbCrA8R," Component Y'CbCrA 8-bit 4:4:4:4, rendering format. full range alpha, zero biased YUV, ordered A Y' Cb Cr ",4444YpCbCrA8R,1916022840,.YpCbCrA8R_4444:
+kCVPixelFormatType_4444AYpCbCr8," Component Y'CbCrA 8-bit 4:4:4:4, ordered A Y' Cb Cr, full range alpha, video range Y'CbCr. ",4444AYpCbCr8,2033463352,.AYpCbCr8_4444:
+kCVPixelFormatType_4444AYpCbCr16," Component Y'CbCrA 16-bit 4:4:4:4, ordered A Y' Cb Cr, full range alpha, video range Y'CbCr, 16-bit little-endian samples. ",4444AYpCbCr16,2033463606,.AYpCbCr16_4444:
+kCVPixelFormatType_444YpCbCr8, Component Y'CbCr 8-bit 4:4:4 ,444YpCbCr8,1983066168,.YpCbCr8_444:
+kCVPixelFormatType_422YpCbCr16," Component Y'CbCr 10,12,14,16-bit 4:2:2 ",422YpCbCr16,1983000886,.YpCbCr16_422:
+kCVPixelFormatType_422YpCbCr10, Component Y'CbCr 10-bit 4:2:2 ,422YpCbCr10,1983000880,.YpCbCr10_422:
+kCVPixelFormatType_444YpCbCr10, Component Y'CbCr 10-bit 4:4:4 ,444YpCbCr10,1983131952,.YpCbCr10_444:
+kCVPixelFormatType_420YpCbCr8Planar, Planar Component Y'CbCr 8-bit 4:2:0.  baseAddr points to a big-endian CVPlanarPixelBufferInfo_YCbCrPlanar struct ,420YpCbCr8Planar,2033463856,.YpCbCr8Planar_420:
+kCVPixelFormatType_420YpCbCr8PlanarFullRange," Planar Component Y'CbCr 8-bit 4:2:0, full range.  baseAddr points to a big-endian CVPlanarPixelBufferInfo_YCbCrPlanar struct ",420YpCbCr8PlanarFullRange,1714696752,.YpCbCr8PlanarFullRange_420:
+kCVPixelFormatType_422YpCbCr_4A_8BiPlanar," First plane: Video-range Component Y'CbCr 8-bit 4:2:2, ordered Cb Y'0 Cr Y'1; second plane: alpha 8-bit 0-255 ",422YpCbCr_4A_8BiPlanar,1630697081,.YpCbCr_4A_8BiPlanar_422:
+kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange," Bi-Planar Component Y'CbCr 8-bit 4:2:0, video-range (luma=[16,235] chroma=[16,240]).  baseAddr points to a big-endian CVPlanarPixelBufferInfo_YCbCrBiPlanar struct ",420YpCbCr8BiPlanarVideoRange,875704438,.YpCbCr8BiPlanarVideoRange_420:
+kCVPixelFormatType_420YpCbCr8BiPlanarFullRange," Bi-Planar Component Y'CbCr 8-bit 4:2:0, full-range (luma=[0,255] chroma=[1,255]).  baseAddr points to a big-endian CVPlanarPixelBufferInfo_YCbCrBiPlanar struct ",420YpCbCr8BiPlanarFullRange,875704422,.YpCbCr8BiPlanarFullRange_420:
+kCVPixelFormatType_422YpCbCr8_yuvs," Component Y'CbCr 8-bit 4:2:2, ordered Y'0 Cb Y'1 Cr ",422YpCbCr8_yuvs,2037741171,.YpCbCr8_yuvs_422:
+kCVPixelFormatType_422YpCbCr8FullRange," Component Y'CbCr 8-bit 4:2:2, full range, ordered Y'0 Cb Y'1 Cr ",422YpCbCr8FullRange,2037741158,.YpCbCr8FullRange_422:
+kCVPixelFormatType_OneComponent8," 8 bit one component, black is zero ",OneComponent8,1278226488,.oneComponent8:
+kCVPixelFormatType_TwoComponent8," 8 bit two component, black is zero ",TwoComponent8,843264056,.twoComponent8:
+kCVPixelFormatType_30RGBLEPackedWideGamut," little-endian RGB101010, 2 MSB are zero, wide-gamut (384-895) ",30RGBLEPackedWideGamut,1999843442,.RGBLEPackedWideGamut30:
+kCVPixelFormatType_OneComponent16Half," 16 bit one component IEEE half-precision float, 16-bit little-endian samples ",OneComponent16Half,1278226536,.oneComponent16Half:
+kCVPixelFormatType_OneComponent32Float," 32 bit one component IEEE float, 32-bit little-endian samples ",OneComponent32Float,1278226534,.oneComponent32Float:
+kCVPixelFormatType_TwoComponent16Half," 16 bit two component IEEE half-precision float, 16-bit little-endian samples ",TwoComponent16Half,843264104,.twoComponent16Half:
+kCVPixelFormatType_TwoComponent32Float," 32 bit two component IEEE float, 32-bit little-endian samples ",TwoComponent32Float,843264102,.twoComponent32Float:
+kCVPixelFormatType_64RGBAHalf," 64 bit RGBA IEEE half-precision float, 16-bit little-endian samples ",64RGBAHalf,1380411457,.RGBAHalf64:
+kCVPixelFormatType_128RGBAFloat," 128 bit RGBA IEEE float, 32-bit little-endian samples ",128RGBAFloat,1380410945,.RGBAFloat128:
+kCVPixelFormatType_14Bayer_GRBG," Bayer 14-bit Little-Endian, packed in 16-bits, ordered G R G R... alternating with B G B G... ",14Bayer_GRBG,1735549492,.bayer_GRBG14:
+kCVPixelFormatType_14Bayer_RGGB," Bayer 14-bit Little-Endian, packed in 16-bits, ordered R G R G... alternating with G B G B... ",14Bayer_RGGB,1919379252,.bayer_RGGB14:
+kCVPixelFormatType_14Bayer_BGGR," Bayer 14-bit Little-Endian, packed in 16-bits, ordered B G B G... alternating with G R G R... ",14Bayer_BGGR,1650943796,.bayer_BGGR14:
+kCVPixelFormatType_14Bayer_GBRG," Bayer 14-bit Little-Endian, packed in 16-bits, ordered G B G B... alternating with R G R G... ",14Bayer_GBRG,1734505012,.bayer_GBRG14:
