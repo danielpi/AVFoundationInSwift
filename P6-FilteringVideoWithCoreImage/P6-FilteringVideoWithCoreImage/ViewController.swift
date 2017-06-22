@@ -1,41 +1,31 @@
 //
 //  ViewController.swift
-//  P1-DisplayCameraFeed
+//  P6-FilteringVideoWithCoreImage
 //
-//  Created by Daniel Pink on 25/2/17.
+//  Created by Daniel Pink on 21/6/17.
 //  Copyright © 2017 Daniel Pink. All rights reserved.
 //
 
 import Cocoa
 import AVFoundation
+import MetalKit
 
 /*
  This file holds all the code for this example. Everything is done in the ViewController object. The high level summry of what is required is as follows
  
- Select a AVCaptureDevice that represents the camera we are going to view from. From that device get an AVCaptureInputDevice and add it to our AVCaptureSession. Then ask the session for a CALayer that contains the preview of the video stream. Set that as the layer for the NSView that we have placed in the UI for viewing. Tell the session to start running.
- 
- The code below has the details. The other steps that were required to get the project to run are listed below.
- 
- IB
- - Drag a custom view out into your view controller
- - Make it fill the whole view controller
- - Set the constraints such that it fills the entire area even when it resizes.
- - Set it such that the view can't get too small
- - In the View Effects inspector, set the Core Animation Layer to be the Custom View rather than the View.
- - Link the custom view to the cameraView IBOutlet
- 
- Project settings
- - Link the AVFoundation and AVKit frameworks
- 
  Links
- - https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/00_Introduction.html
- - Discussions about CALayers and NSView items https://www.objc.io/issues/14-mac/appkit-for-uikit-developers/
+ - https://3d.bk.tudelft.nl/ken/en/2016/11/17/swift-3-and-metal.html
+ - http://metalcvexamples.com/metal-cv-basics/2015/12/13/display-images-with-mtkview.html
+ - https://github.com/FlexMonkey/ImageProcessingWithMetal/blob/master/ImageProcessingInMetal_final.pdf
+ - https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_tasks/ci_tasks.html
+ -
  */
 
 class ViewController: NSViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     @IBOutlet weak var cameraView: NSView!
-    @IBOutlet weak var imageView: NSImageView!
+    //@IBOutlet weak var imageView: NSImageView!
+    @IBOutlet weak var ciView: MetalImageView!
     
     // Still and Video Media Capture
     // Recording input from cameras and microphones is managed by a capture session. A capture session coordinates the flow of data from input devices to outputs such as a movie file. You can configure multiple inputs and outputs for a single session, even when the session is running. You send messages to the session to start and stop data flow.
@@ -92,7 +82,6 @@ class ViewController: NSViewController, AVCaptureVideoDataOutputSampleBufferDele
             videoDeviceOutput = AVCaptureVideoDataOutput()
             
             let availablePixelFormats: Array<OSTypedEnum> = videoDeviceOutput!.availableVideoCVPixelFormatTypedEnums
-            print("\(videoDeviceOutput) Output Device has the following available Pixel Formats")
             for pixelFormat in availablePixelFormats {
                 print("- \(pixelFormat.typeKey): \(pixelFormat.description)")
             }
@@ -138,6 +127,12 @@ class ViewController: NSViewController, AVCaptureVideoDataOutputSampleBufferDele
         cameraView.layer = newCameraViewLayer
         cameraView.wantsLayer = true
         
+        ciView.device = MTLCreateSystemDefaultDevice()
+        // https://stackoverflow.com/questions/39206935/metalkit-drawable-texture-assertion-error
+        ciView.framebufferOnly = false
+        ciView.enableSetNeedsDisplay = false
+        ciView.isPaused = true
+        
         session.startRunning()
     }
     
@@ -150,32 +145,16 @@ class ViewController: NSViewController, AVCaptureVideoDataOutputSampleBufferDele
         session.stopRunning()
     }
     
-    func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
+    func captureOutput(_ captureOutput: AVCaptureOutput!,
+                       didOutputSampleBuffer sampleBuffer: CMSampleBuffer!,
+                       from connection: AVCaptureConnection!) {
         
         // https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/06_MediaRepresentations.html#//apple_ref/doc/uid/TP40010188-CH2-SW16
-
-        let timeIntervalSinceVideoLaunch = videoTimestamp(sampleBuffer: sampleBuffer)
         
-        // Use the configured formatter to generate the string.
-        print(timeIntervalSinceVideoLaunch.elapsedTimeFormat)
-        
-        let image = imageFromSampleBuffer(sampleBuffer: sampleBuffer)
-        DispatchQueue.main.async {
-            self.imageView.image = image
-        }
-    }
-    
-    func videoTimestamp(sampleBuffer: CMSampleBuffer) -> TimeInterval {
-        let presentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
-        
-        if firstTimeStamp == nil {
-            firstTimeStamp = presentationTime
-        }
-        
-        let timeSinceVideoLaunch = CMTimeSubtract(presentationTime, firstTimeStamp!)
-        let timeIntervalSinceVideoLaunch = TimeInterval(Double(timeSinceVideoLaunch.value) / Double(timeSinceVideoLaunch.timescale))
-        
-        return timeIntervalSinceVideoLaunch
+        let ciImage = CIImage(buffer: sampleBuffer)!
+        let output = pixellate(scale: 20.0)(ciImage)
+        ciView.image = output
+        ciView.draw()
     }
     
     func imageFromSampleBuffer(sampleBuffer: CMSampleBuffer) -> NSImage {
@@ -196,7 +175,7 @@ class ViewController: NSViewController, AVCaptureVideoDataOutputSampleBufferDele
         
         // Create a device-dependent RGB color space
         let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
-
+        
         // Create a bitmap graphics context with the sample buffer data
         let context: CGContext = CGContext(data: baseAddress,
                                            width: width,
@@ -205,35 +184,6 @@ class ViewController: NSViewController, AVCaptureVideoDataOutputSampleBufferDele
                                            bytesPerRow: bytesPerRow,
                                            space: colorSpace,
                                            bitmapInfo: CGImageAlphaInfo.noneSkipFirst.rawValue)!
-        
-        // Draw something into the bitmap now that we have it.
-        let rectangle = CGRect(x: 20, y: 20, width: 256, height: 128)
-        
-        context.setFillColor(NSColor.init(calibratedRed: 0.5, green: 0.5, blue: 0.5, alpha: 0.5).cgColor)
-        context.setStrokeColor(.black)
-        context.setLineWidth(10)
-        
-        context.addRect(rectangle)
-        context.drawPath(using: .fillStroke)
-        
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-        
-        let attrs = [NSFontAttributeName: NSFont(name: "HelveticaNeue-Thin", size: 136)!, NSParagraphStyleAttributeName: paragraphStyle]
-        let timeIntervalSinceVideoLaunch = videoTimestamp(sampleBuffer: sampleBuffer)
-        let timestamp: NSString = timeIntervalSinceVideoLaunch.elapsedTimeFormat as NSString
-        
-        let nameTextSize = timestamp.size(withAttributes: attrs)
-        let legendTextOriginX = 30
-        let legendTextOriginY = 30
-        let legendNameRect = CGRect(x: legendTextOriginX,
-                                    y: legendTextOriginY,
-                                    width: 200,
-                                    height: Int(nameTextSize.height))
-        
-        timestamp.draw(in: legendNameRect, withAttributes: attrs)
-        context.addRect(legendNameRect)
-        context.drawPath(using: .fillStroke)
         
         
         // Create a Quartz image from the pixel data in the bitmap graphics context
@@ -246,6 +196,16 @@ class ViewController: NSViewController, AVCaptureVideoDataOutputSampleBufferDele
         let image: NSImage = NSImage(cgImage: quartzImage, size: NSZeroSize)
         
         return(image)
+    }
+}
+
+extension CIImage {
+    convenience init?(buffer: CMSampleBuffer) {
+        if let imageBuffer = CMSampleBufferGetImageBuffer(buffer) {
+            self.init(cvImageBuffer: imageBuffer)
+        } else {
+            return nil
+        }
     }
 }
 
@@ -265,6 +225,18 @@ extension TimeInterval {
         } else {
             return "--:--"
         }
+    }
+}
+
+typealias Filter = (CIImage) -> CIImage
+
+func pixellate(scale: Float) -> Filter {
+    return { image in
+        let parameters: [String: Any] = [
+            kCIInputImageKey:image,
+            kCIInputScaleKey:scale
+        ]
+        return CIFilter(name: "CIPixellate", withInputParameters: parameters)!.outputImage!
     }
 }
 
@@ -550,7 +522,7 @@ enum OSTypedEnum: OSType {
             return "Bayer 14-bit Little-Endian, packed in 16-bits, ordered B G B G... alternating with G R G R..."
         case .bayer_GBRG14:
             return "Bayer 14-bit Little-Endian, packed in 16-bits, ordered G B G B... alternating with R G R G..."
-
+            
         }
     }
     
