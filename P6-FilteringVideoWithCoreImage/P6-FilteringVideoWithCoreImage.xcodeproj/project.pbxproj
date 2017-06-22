@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E67F19C51EFB5405001628F6 /* MetalImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67F19C41EFB5405001628F6 /* MetalImageView.swift */; };
+		E67F19C81EFB79E2001628F6 /* FunctionalCoreImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67F19C71EFB79E2001628F6 /* FunctionalCoreImage.swift */; };
 		E68EBA141EFA343100E434E3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68EBA131EFA343100E434E3 /* AppDelegate.swift */; };
 		E68EBA161EFA343100E434E3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68EBA151EFA343100E434E3 /* ViewController.swift */; };
 		E68EBA181EFA343100E434E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E68EBA171EFA343100E434E3 /* Assets.xcassets */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		E67F19C41EFB5405001628F6 /* MetalImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalImageView.swift; sourceTree = "<group>"; };
+		E67F19C71EFB79E2001628F6 /* FunctionalCoreImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionalCoreImage.swift; sourceTree = "<group>"; };
 		E68EBA101EFA343100E434E3 /* P6-FilteringVideoWithCoreImage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "P6-FilteringVideoWithCoreImage.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E68EBA131EFA343100E434E3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E68EBA151EFA343100E434E3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 				E68EBA131EFA343100E434E3 /* AppDelegate.swift */,
 				E68EBA151EFA343100E434E3 /* ViewController.swift */,
 				E67F19C41EFB5405001628F6 /* MetalImageView.swift */,
+				E67F19C71EFB79E2001628F6 /* FunctionalCoreImage.swift */,
 				E68EBA271EFA4CF000E434E3 /* CoreImageView.swift */,
 				E68EBA171EFA343100E434E3 /* Assets.xcassets */,
 				E68EBA191EFA343100E434E3 /* Main.storyboard */,
@@ -161,6 +164,7 @@
 				E67F19C51EFB5405001628F6 /* MetalImageView.swift in Sources */,
 				E68EBA281EFA4CF000E434E3 /* CoreImageView.swift in Sources */,
 				E68EBA161EFA343100E434E3 /* ViewController.swift in Sources */,
+				E67F19C81EFB79E2001628F6 /* FunctionalCoreImage.swift in Sources */,
 				E68EBA141EFA343100E434E3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

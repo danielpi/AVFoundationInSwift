@@ -686,18 +686,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="679" height="473"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B3y-kO-EPJ">
-                                <rect key="frame" x="0.0" y="0.0" width="348" height="473"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            </customView>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LjM-kG-EYl" customClass="MetalImageView" customModule="P6_FilteringVideoWithCoreImage" customModuleProvider="target">
-                                <rect key="frame" x="346" y="0.0" width="333" height="473"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="LjM-kG-EYl" customClass="MetalImageView" customModule="P6_FilteringVideoWithCoreImage" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="679" height="473"/>
                             </customView>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="LjM-kG-EYl" secondAttribute="bottom" id="Mpu-U8-fja"/>
+                            <constraint firstAttribute="trailing" secondItem="LjM-kG-EYl" secondAttribute="trailing" id="RJS-rP-UzA"/>
+                            <constraint firstItem="LjM-kG-EYl" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="X9d-26-NRq"/>
+                            <constraint firstItem="LjM-kG-EYl" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="js6-gv-7xi"/>
+                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="cameraView" destination="B3y-kO-EPJ" id="ebk-GO-b4Q"/>
                         <outlet property="ciView" destination="LjM-kG-EYl" id="8tV-dN-RDa"/>
                     </connections>
                 </viewController>

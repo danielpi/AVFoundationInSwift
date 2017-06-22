@@ -50,16 +50,28 @@ class MetalImageView: MTKView
         
         let bounds = CGRect(origin: CGPoint.zero, size: drawableSize)
         
-        let originX = image.extent.origin.x
-        let originY = image.extent.origin.y
+        let imageAspect = image.extent.width / image.extent.height
+        let drawableAspect = drawableSize.width / drawableSize.height
+        
+        
         
         let scaleX = drawableSize.width / image.extent.width
         let scaleY = drawableSize.height / image.extent.height
         let scale = min(scaleX, scaleY)
         
-        let scaledImage = image
-            .applying(CGAffineTransform(translationX: -originX, y: -originY))
+        var scaledImage = image
             .applying(CGAffineTransform(scaleX: scale, y: scale))
+        
+        var originX = scaledImage.extent.origin.x
+        var originY = scaledImage.extent.origin.y
+        
+        if imageAspect > drawableAspect {
+            originY = (drawableSize.height - scaledImage.extent.height) / 2.0
+        } else {
+            originX = (drawableSize.width - scaledImage.extent.width) / 2.0
+        }
+        
+        scaledImage = scaledImage.applying(CGAffineTransform(translationX: originX, y: originY))
         
         ciContext.render(scaledImage,
                          to: targetTexture,
@@ -70,5 +82,6 @@ class MetalImageView: MTKView
         commandBuffer.present(currentDrawable!)
         
         commandBuffer.commit()
+        self.draw()
     }
 }

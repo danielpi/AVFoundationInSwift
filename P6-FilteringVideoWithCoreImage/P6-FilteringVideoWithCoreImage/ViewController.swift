@@ -22,19 +22,9 @@ import MetalKit
  */
 
 class ViewController: NSViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
-    
-    @IBOutlet weak var cameraView: NSView!
-    //@IBOutlet weak var imageView: NSImageView!
     @IBOutlet weak var ciView: MetalImageView!
     
-    // Still and Video Media Capture
-    // Recording input from cameras and microphones is managed by a capture session. A capture session coordinates the flow of data from input devices to outputs such as a movie file. You can configure multiple inputs and outputs for a single session, even when the session is running. You send messages to the session to start and stop data flow.
-    
-    // We need to ask the system for what AVCaptureDevices there are available. Select one. Grab its
-    // AVCaptureDeviceInput and give it to the session object (after removing the previous one).
-    
     let session: AVCaptureSession = AVCaptureSession()
-    var firstTimeStamp: CMTime?
     var videoDeviceInput: AVCaptureDeviceInput?
     var videoDeviceOutput: AVCaptureVideoDataOutput?
     var videoDevice: AVCaptureDevice? {
@@ -43,7 +33,6 @@ class ViewController: NSViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
         set {
             session.beginConfiguration()
-            firstTimeStamp = nil
             
             // Remove the old device input from the session
             if let exisiting = videoDeviceInput {
@@ -118,14 +107,6 @@ class ViewController: NSViewController, AVCaptureVideoDataOutputSampleBufferDele
         }
         
         videoDevice = defaultVideoDevice
-        let newCameraViewLayer = AVCaptureVideoPreviewLayer(session: session)!
-        
-        newCameraViewLayer.frame = cameraView.bounds
-        newCameraViewLayer.backgroundColor = .black
-        newCameraViewLayer.autoresizingMask = [.layerWidthSizable,.layerHeightSizable]
-        
-        cameraView.layer = newCameraViewLayer
-        cameraView.wantsLayer = true
         
         ciView.device = MTLCreateSystemDefaultDevice()
         // https://stackoverflow.com/questions/39206935/metalkit-drawable-texture-assertion-error
@@ -152,50 +133,9 @@ class ViewController: NSViewController, AVCaptureVideoDataOutputSampleBufferDele
         // https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/06_MediaRepresentations.html#//apple_ref/doc/uid/TP40010188-CH2-SW16
         
         let ciImage = CIImage(buffer: sampleBuffer)!
-        let output = pixellate(scale: 20.0)(ciImage)
+        let output = pixellate(scale: 2.0)(ciImage)
         ciView.image = output
-        ciView.draw()
-    }
-    
-    func imageFromSampleBuffer(sampleBuffer: CMSampleBuffer) -> NSImage {
-        // Get a CMSampleBuffer's Core Video image buffer for the media data
-        let imageBuffer: CVImageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)!
-        // Lock the base address of the pixel buffer
-        CVPixelBufferLockBaseAddress(imageBuffer, CVPixelBufferLockFlags(rawValue: 0))
-        
-        // Get the number of bytes per row for the pixel buffer
-        let baseAddress = CVPixelBufferGetBaseAddress(imageBuffer)
-        
-        // Get the number of bytes per row for the pixel buffer
-        let bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer)
-        
-        // Get the pixel buffer width and height
-        let width = CVPixelBufferGetWidth(imageBuffer)
-        let height = CVPixelBufferGetHeight(imageBuffer)
-        
-        // Create a device-dependent RGB color space
-        let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
-        
-        // Create a bitmap graphics context with the sample buffer data
-        let context: CGContext = CGContext(data: baseAddress,
-                                           width: width,
-                                           height: height,
-                                           bitsPerComponent: 8,
-                                           bytesPerRow: bytesPerRow,
-                                           space: colorSpace,
-                                           bitmapInfo: CGImageAlphaInfo.noneSkipFirst.rawValue)!
-        
-        
-        // Create a Quartz image from the pixel data in the bitmap graphics context
-        let quartzImage: CGImage = context.makeImage()!
-        
-        // Unlock the pixel buffer
-        CVPixelBufferUnlockBaseAddress(imageBuffer, CVPixelBufferLockFlags(rawValue:0))
-        
-        // Create an image object from the Quartz image
-        let image: NSImage = NSImage(cgImage: quartzImage, size: NSZeroSize)
-        
-        return(image)
+        //ciView.draw()
     }
 }
 
@@ -209,25 +149,7 @@ extension CIImage {
     }
 }
 
-extension TimeInterval {
-    
-    // http://stackoverflow.com/questions/4933075/nstimeinterval-to-hhmmss
-    var elapsedTimeFormat: String {
-        let formatter = DateComponentsFormatter()
-        formatter.zeroFormattingBehavior = .pad
-        formatter.allowedUnits = [.minute, .second]
-        
-        if self >= 3600 {
-            formatter.allowedUnits.insert(.hour)
-        }
-        if let result = formatter.string(from: self) {
-            return result
-        } else {
-            return "--:--"
-        }
-    }
-}
-
+/*
 typealias Filter = (CIImage) -> CIImage
 
 func pixellate(scale: Float) -> Filter {
@@ -239,7 +161,7 @@ func pixellate(scale: Float) -> Filter {
         return CIFilter(name: "CIPixellate", withInputParameters: parameters)!.outputImage!
     }
 }
-
+*/
 extension AVCaptureVideoDataOutput {
     var availableVideoCVPixelFormatTypedEnums: [OSTypedEnum] {
         let availablePixelFormatDescriptions: Array<OSType> = self.availableVideoCVPixelFormatTypes as! Array<OSType>
